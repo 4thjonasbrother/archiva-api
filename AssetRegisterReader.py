@@ -69,10 +69,10 @@ class AssetRegister:
                         if name_cell:
                             data["name"] = name_cell.strip()
 
-                    elif "previous" in each_title:
-                        previous_loc_cell: str = current_sheet[f"{column}{row}"].value
-                        if previous_loc_cell:
-                            data["previous_location"] = previous_loc_cell.strip()
+                    elif "present" in each_title:
+                        present_loc_cell: str = current_sheet[f"{column}{row}"].value
+                        if present_loc_cell:
+                            data["present_location"] = present_loc_cell.strip()
 
                     elif "condition" in each_title:
                         condition_cell: str = current_sheet[f"{column}{row}"].value
@@ -83,7 +83,7 @@ class AssetRegister:
                     "asset_number": "",
                     "sap_number": "",
                     "name": "",
-                    "previous_location": "",
+                    "present_location": "",
                     "condition": ""
                 }:
                     results.append(data)
