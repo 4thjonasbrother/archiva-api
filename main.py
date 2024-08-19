@@ -3,7 +3,7 @@ from AssetRegisterReader import AssetRegister
 import traceback
 
 app = FastAPI()
-asset_register = AssetRegister("//10.12.29.55/office/Corporate Affairs Section/Procurement Unit/Asset Register/NA Asset Register 2023.xlsx")
+asset_register = AssetRegister()
 
 @app.get("/")
 async def root():
