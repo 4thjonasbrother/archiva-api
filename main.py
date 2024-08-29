@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from AssetRegisterReader import AssetRegister
+from DB import ArchivaDB
+from schema import Dhuvas
 import traceback
 
-app = FastAPI()
+app = FastAPI(
+    title="ArchivaAPI"
+)
+
+DB = ArchivaDB()
 
 origins = [
     "http://localhost:3000",
@@ -25,7 +31,7 @@ asset_register = AssetRegister()
 
 @app.get("/")
 async def root():
-    return {"start": "Welcome to Archiva API", "last_updated": "20/08/2024 09:32"}
+    return {"start": "Welcome to Archiva API", "last_updated": "29/08/2024 09:32"}
 
 @app.get("/assets")
 async def assets():
@@ -54,3 +60,33 @@ async def update_assets():
     except Exception:
         return {"success": False, "message": traceback.print_exc()}
     
+@app.get("/dhuvas")
+async def dhuvas():
+    try:
+        result = DB.get_dhuvas()
+        return {"success": True, "result": result}
+    except Exception:
+        return {"success": False, "result": traceback.print_exc()}
+    
+
+@app.post("/dhuvas/add/")
+async def add_dhuvas(dhuvas: Dhuvas):
+    try:
+        DB.add_dhuvas(
+            day=dhuvas.day,
+            month=dhuvas.month,
+            year=dhuvas.year,
+            detail=dhuvas.detail,
+            source=dhuvas.source
+        )
+        return {"success": True, "message": "Successfully added dhuvas!"}
+    except Exception:
+        return {"success": False, "message": traceback.print_exc()}
+
+@app.post("/dhuvas/remove/")
+async def remove_dhuvas(dhuvas: Dhuvas):
+    try:
+        DB.remove_dhuvas(dhuvasId = dhuvas.id)
+        return {"success": True, "message": "Successfully removed dhuvas!"}
+    except Exception:
+        return {"success": False, "message": traceback.print_exc()}
