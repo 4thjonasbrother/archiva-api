@@ -91,3 +91,7 @@ async def remove_dhuvas(dhuvas: Dhuvas):
         return {"success": True, "message": "Successfully removed dhuvas!"}
     except Exception:
         return {"success": False, "message": traceback.print_exc()}
+
+@app.get("/racks/")
+async def racks():
+    return DB.get_racks()

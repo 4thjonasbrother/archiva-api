@@ -9,6 +9,7 @@ class ArchivaDB:
         uri = "mongodb://10.12.29.68:27017/?directConnection=true"
         self.client = MongoClient(uri, server_api=ServerApi('1'))
         self.DhuvasDatabase = self.client["365"]
+        self.RacksDatabase = self.client["racks"]
     
     def get_dhuvas(self):
         """Get all the items in 365 Dhuvas collection."""
@@ -44,7 +45,11 @@ class ArchivaDB:
             print(traceback.print_exc())
             return False
 
+    def get_racks(self):
+        """Get the list of the records room racks."""
+        racksCollection = self.RacksDatabase["racks"]
+        return [rack for rack in racksCollection.find({})]
+
 
 if __name__ == "__main__":
     db = ArchivaDB()
-    print(db.get_dhuvas())
