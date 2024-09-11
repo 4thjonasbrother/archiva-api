@@ -95,3 +95,7 @@ async def remove_dhuvas(dhuvas: Dhuvas):
 @app.get("/racks/")
 async def racks():
     return DB.get_racks()
+
+@app.get("/racks/{rackRoute}")
+async def get_rack(rackRoute: str):
+    return DB.get_rack(rackRoute)

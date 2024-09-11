@@ -2,6 +2,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson import ObjectId
 import traceback
+from typing import Dict, List
 
 
 class ArchivaDB:
@@ -10,6 +11,8 @@ class ArchivaDB:
         self.client = MongoClient(uri, server_api=ServerApi('1'))
         self.DhuvasDatabase = self.client["365"]
         self.RacksDatabase = self.client["racks"]
+
+        self.racksCollection = self.RacksDatabase["racks"]
     
     def get_dhuvas(self):
         """Get all the items in 365 Dhuvas collection."""
@@ -47,9 +50,11 @@ class ArchivaDB:
 
     def get_racks(self):
         """Get the list of the records room racks."""
-        racksCollection = self.RacksDatabase["racks"]
-        return [rack for rack in racksCollection.find({})]
+        return [rack for rack in self.racksCollection.find({})]
 
+    def get_rack(self, rackRoute: str) -> Dict[str, int | str | List[str] | Dict[str, Dict[str, str | List[str]]]] | None:
+        """Get rack details using the rack route."""
+        return self.racksCollection.find_one({"rack_route": rackRoute})
 
 if __name__ == "__main__":
     db = ArchivaDB()
