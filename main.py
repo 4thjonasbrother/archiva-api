@@ -7,7 +7,8 @@ from typing import List, Dict
 import traceback
 
 app = FastAPI(
-    title="ArchivaAPI"
+    title="ArchivaAPI",
+    version="0.1.1"
 )
 
 DB = ArchivaDB()
