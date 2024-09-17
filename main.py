@@ -98,4 +98,4 @@ async def racks():
 
 @app.get("/racks/{rackRoute}")
 async def get_rack(rackRoute: str):
-    return DB.get_rack(rackRoute)
+    return DB.get_rack(rackRoute.lower())
