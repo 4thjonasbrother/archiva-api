@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from AssetRegisterReader import AssetRegister
 from DB import ArchivaDB
 from schema import Dhuvas
+from typing import List, Dict
 import traceback
 
 app = FastAPI(
@@ -32,7 +33,7 @@ asset_register = AssetRegister()
 
 @app.get("/")
 async def root():
-    return {"start": "Welcome to Archiva API", "last_updated": "29/08/2024 09:32"}
+    return {"start": "Welcome to Archiva API", "last_updated": "17/09/2024"}
 
 @app.get("/assets")
 async def assets():
@@ -94,8 +95,23 @@ async def remove_dhuvas(dhuvas: Dhuvas):
 
 @app.get("/racks/")
 async def racks():
+    """Used to get the details of all the racks in the records room."""
     return DB.get_racks()
 
 @app.get("/racks/{rackRoute}")
 async def get_rack(rackRoute: str):
+    """Used to get the details of a specifc rack in the records room."""
     return DB.get_rack(rackRoute.lower())
+
+@app.get("/records/all")
+async def get_all_records():
+    """Used to get all the records in the database."""
+    racks = DB.get_racks()
+    results: List[str] = []
+    for rack in racks:
+        if rack["records"]:
+            results += rack["records"]
+        else:
+            for num, item in rack["sections"].items():
+                results += item["records"]
+    return results
