@@ -2,7 +2,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson import ObjectId
 import traceback
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 class ArchivaDB:
@@ -64,6 +64,21 @@ class ArchivaDB:
             self.racksCollection.find_one_and_update({"rack_route": rackRoute}, {"$set": {"sections": section}})
             return True
 
+    def get_records(self) -> List[Tuple[str, str]]:
+        """
+        Get the name of all the records in the database.\n
+        Returns a list of tuples. Each tuple contains the record name and the rack.\n
+        Eg: ``[("record_name", "rack_number")]``
+        """
+        results: List[Tuple[str, str]] = []
+        for rack in self.get_racks():
+            if rack["records"]:
+                results += [(record, rack["rack"]) for record in rack["records"]]
+            else:
+                for num, item in rack["sections"].items():
+                    results += [(record, rack["rack"]) for record in item["records"]]
+        
+        return results
 
 if __name__ == "__main__":
     db = ArchivaDB()

@@ -8,7 +8,7 @@ import traceback
 
 app = FastAPI(
     title="ArchivaAPI",
-    version="0.1.1"
+    version="0.1.2"
 )
 
 DB = ArchivaDB()
@@ -34,7 +34,7 @@ asset_register = AssetRegister()
 
 @app.get("/")
 async def root():
-    return {"start": "Welcome to Archiva API", "last_updated": "17/09/2024"}
+    return {"start": "Welcome to Archiva API", "last_updated": "23/09/2024"}
 
 @app.get("/assets")
 async def assets():
@@ -107,12 +107,15 @@ async def get_rack(rackRoute: str):
 @app.get("/records/all")
 async def get_all_records():
     """Used to get all the records in the database."""
-    racks = DB.get_racks()
-    results: List[str] = []
-    for rack in racks:
-        if rack["records"]:
-            results += rack["records"]
-        else:
-            for num, item in rack["sections"].items():
-                results += item["records"]
+    results = [record for record, rack in DB.get_records()]
+    return results
+
+@app.get("/records/search/{query}")
+async def searchRecords(query: str):
+    """
+    Used to search for records in the database.\n 
+    Returns a list of tuples, each tuple containing the name of the record and the rack number.
+    """
+    records = DB.get_records()
+    results = [(record, rack) for record, rack in records if query in record]
     return results
