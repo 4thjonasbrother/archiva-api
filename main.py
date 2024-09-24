@@ -107,7 +107,8 @@ async def get_rack(rackRoute: str):
 @app.get("/records/all")
 async def get_all_records():
     """Used to get all the records in the database."""
-    results = [record for record, rack in DB.get_records()]
+    results = DB.get_records()
+    # results = [record for record, rack in DB.get_records()]
     return results
 
 @app.get("/records/search/{query}")
