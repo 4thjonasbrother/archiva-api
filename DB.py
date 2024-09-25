@@ -4,6 +4,7 @@ from bson import ObjectId
 import traceback
 from typing import Dict, List, Tuple
 from schema import PaymentVoucher
+from datetime import datetime
 
 class ArchivaDB:
     def __init__(self):
@@ -84,7 +85,27 @@ class ArchivaDB:
     def add_pv(self, PV: PaymentVoucher):
         """Adds the PV to the database"""
         pvCollection = self.BandeyriDatabase["pv"]
-        pvCollection.insert_one(PV)
+
+        # change the invoice date to a datetime object in each invoice
+        for invoice in PV.invoiceDetails:
+            invoice["invoiceDate"] = datetime.fromisoformat(invoice["invoiceDate"].replace("Z", "+00:00"))
+
+        pvCollection.insert_one({
+            "pvNum": PV.pvNum,
+            "businessArea": PV.businessArea,
+            "agency": PV.agency, 
+            "vendor": PV.vendor,
+            "date": PV.date,
+            "notes": PV.notes,
+            "currency": PV.currency,
+            "exchangeRate": PV.exchangeRate,
+            "numOfInvoice": PV.numOfInvoice,
+            "invoiceDetails": PV.invoiceDetails,
+            "preparedBy": PV.preparedBy,
+            "verifiedBy": PV.verifiedBy,
+            "authorisedByOne": PV.authorisedByOne,
+            "authorisedByTwo": PV.authorisedByTwo
+        })
 
 if __name__ == "__main__":
     db = ArchivaDB()
