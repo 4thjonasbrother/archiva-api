@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from AssetRegisterReader import AssetRegister
 from DB import ArchivaDB
-from schema import Dhuvas
+from schema import Dhuvas, PaymentVoucher
 from typing import List, Dict
 import traceback
 
@@ -120,3 +120,12 @@ async def searchRecords(query: str):
     records = DB.get_records()
     results = [(record, rack) for record, rack in records if query in record]
     return results
+
+@app.post("/pv/add")
+async def add_PV(pv: PaymentVoucher):
+    try:
+        DB.add_pv(pv)
+        return {"success": True, "message": "Successfully added PV!"}
+    except:
+        return {"success": False, "message": traceback.print_exc()}
+

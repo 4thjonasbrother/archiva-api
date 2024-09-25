@@ -3,7 +3,7 @@ from pymongo.server_api import ServerApi
 from bson import ObjectId
 import traceback
 from typing import Dict, List, Tuple
-
+from schema import PaymentVoucher
 
 class ArchivaDB:
     def __init__(self):
@@ -11,6 +11,7 @@ class ArchivaDB:
         self.client = MongoClient(uri, server_api=ServerApi('1'))
         self.DhuvasDatabase = self.client["365"]
         self.RacksDatabase = self.client["racks"]
+        self.BandeyriDatabase = self.client["bandeyri"]
 
         self.racksCollection = self.RacksDatabase["racks"]
     
@@ -79,6 +80,11 @@ class ArchivaDB:
                     results += [(record, rack["rack"]) for record in item["records"]]
         
         return results
+    
+    def add_pv(self, PV: PaymentVoucher):
+        """Adds the PV to the database"""
+        pvCollection = self.BandeyriDatabase["pv"]
+        pvCollection.insert_one(PV)
 
 if __name__ == "__main__":
     db = ArchivaDB()
