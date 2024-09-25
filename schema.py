@@ -14,7 +14,7 @@ class Dhuvas(BaseModel):
 
 class PaymentVoucher(BaseModel):
     pvNum: int
-    businessArea: str
+    businessArea: int
     agency: str
     vendor: str
     date: datetime
