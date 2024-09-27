@@ -128,6 +128,14 @@ async def add_PV(pv: PaymentVoucher):
     try:
         DB.add_pv(pv)
         return {"success": True, "message": "Successfully added PV!"}
-    except:
+    except Exception:
         return {"success": False, "message": traceback.print_exc()}
 
+
+@app.get("/pv")
+async def get_PVs():
+    try:
+        result = DB.get_pvs()
+        return {"success": True, "result": result}
+    except Exception:
+        return {"success": False, "result": traceback.print_exc()}

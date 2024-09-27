@@ -82,6 +82,10 @@ class ArchivaDB:
         
         return results
     
+    def get_pvs(self) -> List[Dict]:
+        pvCollection = self.BandeyriDatabase["pv"]
+        return list(pvCollection)
+
     def add_pv(self, PV: PaymentVoucher):
         """Adds the PV to the database"""
         pvCollection = self.BandeyriDatabase["pv"]
