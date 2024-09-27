@@ -132,7 +132,7 @@ async def add_PV(pv: PaymentVoucher):
         return {"success": False, "message": traceback.print_exc()}
 
 
-@app.get("/pv")
+@app.get("/pvs")
 async def get_PVs():
     try:
         result = DB.get_pvs()

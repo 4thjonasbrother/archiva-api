@@ -1,3 +1,4 @@
+import json
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson import ObjectId
@@ -82,12 +83,15 @@ class ArchivaDB:
         
         return results
     
-    def get_pvs(self) -> List[Dict] | None:
-        pvCollection = self.BandeyriDatabase["pv"]
-        try:
-            return list(pvCollection)
-        except:
-            return None
+    def get_pvs(self) -> List[Dict]:
+        """Get all the PVs in the database."""
+        pvCollection = self.BandeyriDatabase["pv"].find({})
+        results: List[Dict] = []
+        for pv in pvCollection:
+            pv["_id"] = str(pv["_id"])
+            results.append(pv)
+        
+        return results
 
     def add_pv(self, PV: PaymentVoucher):
         """Adds the PV to the database"""
@@ -111,8 +115,15 @@ class ArchivaDB:
             "preparedBy": PV.preparedBy,
             "verifiedBy": PV.verifiedBy,
             "authorisedByOne": PV.authorisedByOne,
-            "authorisedByTwo": PV.authorisedByTwo
-        })
+            "authorisedByTwo": PV.authorisedByTwo,
+
+            "poNum": "",
+            "paymentMethod": "LT",
+            "parkedDate": None,
+            "postingDate": None,
+            "clearingDoc": {"num": "", "date": None},
+            "transferNum": ""
+        })        
 
 if __name__ == "__main__":
     db = ArchivaDB()
