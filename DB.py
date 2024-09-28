@@ -85,10 +85,11 @@ class ArchivaDB:
     
     def get_pvs(self) -> List[Dict]:
         """Get all the PVs in the database."""
-        pvCollection = self.BandeyriDatabase["pv"].find({})
+        pvCollection: List[Dict] = self.BandeyriDatabase["pv"].find({})
         results: List[Dict] = []
         for pv in pvCollection:
-            pv["_id"] = str(pv["_id"])
+            # pv["_id"] = str(pv["_id"])
+            pv.pop("_id")
             results.append(pv)
         
         return results
