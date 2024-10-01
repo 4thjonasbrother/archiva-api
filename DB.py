@@ -96,6 +96,7 @@ class ArchivaDB:
     def get_pv(self, pvNum: str):
         """Get a PV from the database using the PV number"""
         pv: Dict = self.BandeyriDatabase["pv"].find_one({"pvNum": pvNum})
+        pv.pop("_id")
         return pv
         
     def add_pv(self, PV: PaymentVoucher):
@@ -132,5 +133,3 @@ class ArchivaDB:
 
 if __name__ == "__main__":
     db = ArchivaDB()
-    x= db.get_pv("2024-80")
-    print(x)
