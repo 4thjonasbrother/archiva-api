@@ -21,10 +21,16 @@ class PaymentVoucher(BaseModel):
     notes: str
     currency: str
     exchangeRate: float
-    numOfInvoice: int
+    # numOfInvoice: int
     invoiceDetails: List[Dict[str, str | datetime | int | List[Dict[str, int | str]]]]
     preparedBy: Dict[str, str]
-    verifiedBy: Dict[str, str]
-    authorisedByOne: Dict[str, str]
+    verifiedBy: Dict[str, Optional[str]]
+    authorisedByOne: Dict[str, Optional[str]]
     authorisedByTwo: Dict[str, Optional[str]]
 
+    poNum: Optional[str] = None
+    paymentMethod: str
+    parkedDate: Optional[datetime]
+    postingDate: Optional[datetime]
+    clearingDoc: Dict[str, str | datetime | None]
+    transferNum: Optional[str] = None

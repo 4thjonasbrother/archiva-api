@@ -1,4 +1,3 @@
-import json
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson import ObjectId
@@ -94,6 +93,11 @@ class ArchivaDB:
         
         return results
 
+    def get_pv(self, pvNum: str):
+        """Get a PV from the database using the PV number"""
+        pv: Dict = self.BandeyriDatabase["pv"].find_one({"pvNum": pvNum})
+        return pv
+        
     def add_pv(self, PV: PaymentVoucher):
         """Adds the PV to the database"""
         pvCollection = self.BandeyriDatabase["pv"]
@@ -103,7 +107,7 @@ class ArchivaDB:
             invoice["invoiceDate"] = datetime.fromisoformat(invoice["invoiceDate"].replace("Z", "+00:00"))
 
         pvCollection.insert_one({
-            "pvNum": PV.pvNum,
+            "pvNum": f"{PV.date.year}-{PV.pvNum}",
             "businessArea": PV.businessArea,
             "agency": PV.agency, 
             "vendor": PV.vendor,
@@ -111,20 +115,22 @@ class ArchivaDB:
             "notes": PV.notes,
             "currency": PV.currency,
             "exchangeRate": PV.exchangeRate,
-            "numOfInvoice": PV.numOfInvoice,
+            "numOfInvoice": len(PV.invoiceDetails),
             "invoiceDetails": PV.invoiceDetails,
             "preparedBy": PV.preparedBy,
             "verifiedBy": PV.verifiedBy,
             "authorisedByOne": PV.authorisedByOne,
             "authorisedByTwo": PV.authorisedByTwo,
 
-            "poNum": "",
-            "paymentMethod": "LT",
-            "parkedDate": None,
-            "postingDate": None,
-            "clearingDoc": {"num": "", "date": None},
-            "transferNum": ""
-        })        
+            "poNum": PV.poNum,
+            "paymentMethod": PV.paymentMethod,
+            "parkedDate": PV.parkedDate,
+            "postingDate": PV.postingDate,
+            "clearingDoc": PV.clearingDoc,
+            "transferNum": PV.transferNum
+        })
 
 if __name__ == "__main__":
     db = ArchivaDB()
+    x= db.get_pv("2024-80")
+    print(x)
