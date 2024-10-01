@@ -144,7 +144,7 @@ async def get_PVs():
 @app.get("/pvs/{pvNum}")
 async def get_Pv(pvNum: str):
     try:
-        result = DB
+        result = DB.get_pv(pvNum)
         return {"success": True, "result": result}
     except:
         return {"success": False, "result": traceback.print_exc()}
