@@ -146,7 +146,6 @@ class ArchivaDB:
         pvCollection = self.BandeyriDatabase["pv"]
 
         updated_pv = pvCollection.find_one_and_replace({"pvNum": PV.pvNum}, {
-            "pvNum": PV.pvNum,
             "businessArea": PV.businessArea,
             "agency": PV.agency, 
             "vendor": PV.vendor,
