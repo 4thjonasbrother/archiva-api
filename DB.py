@@ -145,7 +145,7 @@ class ArchivaDB:
         """Updates an already existing PV in the DB. Returns the updated PV document."""
         pvCollection = self.BandeyriDatabase["pv"]
 
-        updated_pv = pvCollection.find_one_and_replace({"pvNum": PV.pvNum}, {
+        updated_pv = pvCollection.find_one_and_update({"pvNum": PV.pvNum}, { "$set": {
             "businessArea": PV.businessArea,
             "agency": PV.agency, 
             "vendor": PV.vendor,
@@ -165,8 +165,8 @@ class ArchivaDB:
             "parkedDate": PV.parkedDate,
             "postingDate": PV.postingDate,
             "clearingDoc": PV.clearingDoc,
-            "transferNum": PV.transferNum
-        }, return_document=True)
+            "transferNum": PV.transferNum 
+        }}, return_document=True)
 
         return updated_pv
 
