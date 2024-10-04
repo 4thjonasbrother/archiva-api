@@ -20,8 +20,8 @@ class PaymentVoucher(BaseModel):
     date: datetime | str
     notes: str
     currency: str
-    exchangeRate: float
-    invoiceDetails: List[Dict[str, str | datetime | float | List[Dict[str, float | str]]]]
+    exchangeRate: float | int
+    invoiceDetails: List[Dict[str, str | int | datetime | float | List[Dict[str, float | str]] | None]]
     preparedBy: Dict[str, str]
     verifiedBy: Dict[str, Optional[str]]
     authorisedByOne: Dict[str, Optional[str]]
