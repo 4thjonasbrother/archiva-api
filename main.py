@@ -141,7 +141,7 @@ async def get_PVs():
         return {"success": False, "result": traceback.print_exc()}
 
 
-@app.put("/pv")
+@app.put("/pvs")
 async def update_PV(pv: PaymentVoucher):
     """Updates a PV"""
     try:
