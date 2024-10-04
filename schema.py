@@ -17,7 +17,7 @@ class PaymentVoucher(BaseModel):
     businessArea: int
     agency: str
     vendor: str
-    date: datetime
+    date: datetime | str
     notes: str
     currency: str
     exchangeRate: float
