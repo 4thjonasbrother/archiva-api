@@ -103,9 +103,19 @@ class ArchivaDB:
         """Adds the PV to the database"""
         pvCollection = self.BandeyriDatabase["pv"]
 
-        # change the invoice date to a datetime object in each invoice
+        
         for invoice in PV.invoiceDetails:
+            # Change the invoice date to a datetime object in each invoice
             invoice["invoiceDate"] = datetime.fromisoformat(invoice["invoiceDate"].replace("Z", "+00:00"))
+
+            # Rounding off the invoice total to 2 decimal
+            invoice["invoiceTotal"] = round(float(invoice["invoiceTotal"]), 2)
+            
+            # Rounding off GL amounts to 2 decimal 
+            glDetails = invoice["glDetails"]
+            for gl in glDetails:
+                gl["amount"] = round(float(gl["amount"]), 2)
+            invoice["glDetails"] = glDetails
 
         pvCollection.insert_one({
             "pvNum": f"{PV.date.year}-{PV.pvNum}",
