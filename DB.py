@@ -168,6 +168,8 @@ class ArchivaDB:
             "transferNum": PV.transferNum 
         }}, return_document=True)
 
+        del updated_pv["_id"]
+        
         return updated_pv
 
 
