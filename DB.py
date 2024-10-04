@@ -118,7 +118,7 @@ class ArchivaDB:
             invoice["glDetails"] = glDetails
 
         pvCollection.insert_one({
-            "pvNum": f"{PV.date.year}-{PV.pvNum}",
+            "pvNum": PV.pvNum,
             "businessArea": PV.businessArea,
             "agency": PV.agency, 
             "vendor": PV.vendor,
@@ -140,6 +140,37 @@ class ArchivaDB:
             "clearingDoc": PV.clearingDoc,
             "transferNum": PV.transferNum
         })
+
+    def update_pv(self, PV: PaymentVoucher) -> Dict:
+        """Updates an already existing PV in the DB. Returns the updated PV document."""
+        pvCollection = self.BandeyriDatabase["pv"]
+
+        updated_pv = pvCollection.find_one_and_replace({"pvNum": PV.pvNum}, {
+            "pvNum": PV.pvNum,
+            "businessArea": PV.businessArea,
+            "agency": PV.agency, 
+            "vendor": PV.vendor,
+            "date": PV.date,
+            "notes": PV.notes,
+            "currency": PV.currency,
+            "exchangeRate": PV.exchangeRate,
+            "numOfInvoice": len(PV.invoiceDetails),
+            "invoiceDetails": PV.invoiceDetails,
+            "preparedBy": PV.preparedBy,
+            "verifiedBy": PV.verifiedBy,
+            "authorisedByOne": PV.authorisedByOne,
+            "authorisedByTwo": PV.authorisedByTwo,
+
+            "poNum": PV.poNum,
+            "paymentMethod": PV.paymentMethod,
+            "parkedDate": PV.parkedDate,
+            "postingDate": PV.postingDate,
+            "clearingDoc": PV.clearingDoc,
+            "transferNum": PV.transferNum
+        }, return_document=True)
+
+        return updated_pv
+
 
 if __name__ == "__main__":
     db = ArchivaDB()

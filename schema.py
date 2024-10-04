@@ -13,7 +13,7 @@ class Dhuvas(BaseModel):
 
 
 class PaymentVoucher(BaseModel):
-    pvNum: int
+    pvNum: str
     businessArea: int
     agency: str
     vendor: str

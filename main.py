@@ -141,6 +141,16 @@ async def get_PVs():
         return {"success": False, "result": traceback.print_exc()}
 
 
+@app.put("/pv")
+async def update_PV(pv: PaymentVoucher):
+    """Updates a PV"""
+    try:
+        result = DB.update_pv(pv)
+        return {"success": True, "result": result}
+    except:
+        return {"success": False, "result": traceback.print_exc()}
+
+
 @app.get("/pvs/{pvNum}")
 async def get_Pv(pvNum: str):
     try:
