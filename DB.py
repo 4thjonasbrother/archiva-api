@@ -172,6 +172,14 @@ class ArchivaDB:
         
         return updated_pv
 
+    def delete_pv(self, pvNum: str):
+        """Deletes the PV with the PV number from the database."""
+        pvCollection = self.BandeyriDatabase["pv"]
+
+        pvCollection.delete_one({"pvNum": pvNum})
+        
+
+
 
 if __name__ == "__main__":
     db = ArchivaDB()

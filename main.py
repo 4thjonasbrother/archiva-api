@@ -158,3 +158,11 @@ async def get_Pv(pvNum: str):
         return {"success": True, "result": result}
     except:
         return {"success": False, "result": traceback.print_exc()}
+
+@app.delete("/pvs/{pvNum}")
+async def delete_Pv(pvNum: str):
+    try:
+        result = DB.delete_Pv(pvNum)
+        return {"success": True, "result": result}
+    except:
+        return {"success": False, "result": traceback.print_exc()}
