@@ -152,7 +152,7 @@ async def update_PV(pv: PaymentVoucher):
 
 
 @app.get("/pvs/{pvNum}")
-async def get_Pv(pvNum: str):
+async def get_PV(pvNum: str):
     try:
         result = DB.get_pv(pvNum)
         return {"success": True, "result": result}
@@ -160,9 +160,9 @@ async def get_Pv(pvNum: str):
         return {"success": False, "result": traceback.print_exc()}
 
 @app.delete("/pvs/{pvNum}")
-async def delete_Pv(pvNum: str):
+async def delete_PV(pvNum: str):
     try:
-        result = DB.delete_Pv(pvNum)
+        result = DB.delete_pv(pvNum)
         return {"success": True, "result": result}
     except:
         return {"success": False, "result": traceback.print_exc()}
